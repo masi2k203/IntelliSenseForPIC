@@ -25,6 +25,17 @@ namespace VScodeIntelliSenseForPIC
             this.configurations = data;
             this.version = version;
         }
+
+        /// <summary>
+        /// コンフィグを設定するメソッド
+        /// </summary>
+        /// <param name="data">configurations以下の設定オブジェクト</param>
+        /// <param name="version">version</param>
+        public void SetConfigProperties(Configurations[] data, int version)
+        {
+            this.configurations = data;
+            this.version = version;
+        }
     }
 
     /// <summary>
@@ -79,6 +90,34 @@ namespace VScodeIntelliSenseForPIC
                 this.cStandard = cStandard;
                 this.cppStandard = cppStandard;
             }
+
+        /// <summary>
+        /// コンフィグを設定するメソッド
+        /// </summary>
+        /// <param name="name">識別名</param>
+        /// <param name="includePath">インクルードパス</param>
+        /// <param name="defines">プリプロセッサ定義</param>
+        /// <param name="intelliSenseMode">IntelliSenseモード</param>
+        /// <param name="browse">IntelliSense用設定</param>
+        /// <param name="cStandard">C言語標準バージョン</param>
+        /// <param name="cppStandard">C++言語標準バージョン</param>
+        public void SetConfigurations(
+            string name,
+            string[] includePath,
+            string[] defines,
+            string intelliSenseMode,
+            Browse browse,
+            string cStandard,
+            string cppStandard)
+        {
+            this.name = name;
+            this.includePath = includePath;
+            this.defines = defines;
+            this.intelliSenseMode = intelliSenseMode;
+            this.browse = browse;
+            this.cStandard = cStandard;
+            this.cppStandard = cppStandard;
+        }
     }
 
     /// <summary>
@@ -105,6 +144,19 @@ namespace VScodeIntelliSenseForPIC
         /// <param name="databaseFilename">データベースへのパス</param>
         /// <param name="limitSymbolsToIncludedHeaders">タグパーサー</param>
         public Browse(string[] path, string databaseFilename, bool limitSymbolsToIncludedHeaders)
+        {
+            this.path = path;
+            this.databaseFilename = databaseFilename;
+            this.limitSymbolsToIncludedHeaders = limitSymbolsToIncludedHeaders;
+        }
+
+        /// <summary>
+        /// IntelliSenseを設定するメソッド
+        /// </summary>
+        /// <param name="path">ヘッダファイルのパス</param>
+        /// <param name="databaseFilename">データベースへのパス</param>
+        /// <param name="limitSymbolsToIncludedHeaders">タグパーサー</param>
+        public void SetBrowse(string[] path, string databaseFilename, bool limitSymbolsToIncludedHeaders)
         {
             this.path = path;
             this.databaseFilename = databaseFilename;
