@@ -5,13 +5,140 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:VScodeIntelliSenseForPIC"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="900"
       Title="SettingConfigPage">
 
+    <Page.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="ControlButton">
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="{x:Type TextBox}" x:Key="TextInputArea">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="{x:Type TextBox}" x:Key="ReadOnlyArea">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+        </Style>
+    </Page.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- メニューバー -->
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+            <MenuItem Header="ファイル(_F)"/>
+        </Menu>
+        
+        <!-- 左：コントロール部分 -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="4">
+            <TextBlock Text="内容設定" FontSize="18"/>
+
+            <GroupBox Header="構成名">
+                <StackPanel>
+                    <Label Content="識別用の名前を入力してください。"/>
+                    <TextBox Text="" Style="{StaticResource TextInputArea}"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="インクルードパス">
+                <StackPanel>
+                    <Label Content="XC8内のincludeフォルダを指定してください。"/>
+                    <Button Content="参照" Style="{StaticResource ControlButton}"/>
+                    <TextBox Text="${workspaceFolder}" Style="{StaticResource ReadOnlyArea}"/>
+                    <TextBox Text="" Style="{StaticResource ReadOnlyArea}"/>
+                    <TextBox Text="" Style="{StaticResource ReadOnlyArea}"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="プリプロセッサ定義">
+                <StackPanel>
+                    <Label Content="プリプロセッサ定義を入力してください。(例：_16F18857)"/>
+                    <TextBox Text="__XC8" Style="{StaticResource ReadOnlyArea}"/>
+                    <TextBox Text="__PICC" Style="{StaticResource ReadOnlyArea}"/>
+                    <TextBox Text="" Style="{StaticResource TextInputArea}"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+
+        <!-- 中：コントロール部分 -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="4">
+            <TextBlock Text="IntelliSense設定" FontSize="18"/>
+            <GroupBox Header="intelliSenseモード">
+                <StackPanel>
+                    <Label Content="インテリセンスエンジンの動作モードを指定してください。"/>
+                    <ComboBox Width="150" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="default" Tag="default"/>
+                        <ComboBoxItem Content="gcc-x64" Tag="gccx64" IsSelected="True"/>
+                        <ComboBoxItem Content="gcc-x84" Tag="gccx84"/>
+                        <ComboBoxItem Content="msvc-x64" Tag="msvcx64"/>
+                        <ComboBoxItem Content="msvc-x86" Tag="msvcx86"/>
+                        <ComboBoxItem Content="clang-x64" Tag="clangx64"/>
+                        <ComboBoxItem Content="clang-x86" Tag="clangx64"/>
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="C言語標準">
+                <StackPanel>
+                    <Label Content="C言語標準のバージョンを選択してください。"/>
+                    <ComboBox Width="150" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="c11" Tag="c11"/>
+                        <ComboBoxItem Content="c89" Tag="c89"/>
+                        <ComboBoxItem Content="c99" Tag="c99" IsSelected="True"/>
+                        <ComboBoxItem Content="default" Tag="default"/>
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="C++言語標準">
+                <StackPanel>
+                    <Label Content="C++言語標準のバージョンを選択してください。"/>
+                    <ComboBox Width="150" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="c++03" Tag="cpp03"/>
+                        <ComboBoxItem Content="c++11" Tag="cpp11"/>
+                        <ComboBoxItem Content="c++14" Tag="cpp14"/>
+                        <ComboBoxItem Content="c++17" Tag="cpp17" IsSelected="True"/>
+                        <ComboBoxItem Content="c++20" Tag="cpp20"/>
+                        <ComboBoxItem Content="c++98" Tag="cpp98"/>
+                        <ComboBoxItem Content="default" Tag="default"/>
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="拡張設定" IsEnabled="False">
+                <StackPanel>
+                    <Label Content="databaseFilename"/>
+                    <TextBox Text="" Style="{StaticResource ReadOnlyArea}"/>
+                    <Button Content="参照" Style="{StaticResource ControlButton}"/>
+                    <CheckBox Content="limitSymbolsToIncludedHeaders" IsChecked="True" Margin="0,5,0,5"/>
+                </StackPanel>
+                
+            </GroupBox>
+        </StackPanel>
+        
+        <!-- 右：出力設定 -->
+        <StackPanel Grid.Row="1" Grid.Column="2" Margin="4">
+            <TextBlock Text="出力設定" FontSize="18"/>
+            <GroupBox Header="出力方法">
+                <StackPanel>
+                    <Label Content="出力方法を選択してください。"/>
+                    <RadioButton Content="ダイアログ出力" GroupName="OutputSetting" Tag="out1"/>
+                    <RadioButton Content="Textファイル(.txt)出力" GroupName="OutputSetting" Tag="out2"/>
+                    <RadioButton Content="Jsonファイル(.json)出力" GroupName="OutputSetting" Tag="out3"/>
+                </StackPanel>
+            </GroupBox>
+            <Button Content="出力" Margin="0,5,0,0" Style="{StaticResource ControlButton}"/>
+        </StackPanel>
     </Grid>
 </Page>
