@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Win32;
+using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 using DialogResult = System.Windows.Forms.DialogResult;
+using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 
 namespace VScodeIntelliSenseForPIC
 {
@@ -72,15 +63,16 @@ namespace VScodeIntelliSenseForPIC
             }
             else if (OutputToText_RadioButton.IsChecked == true)
             {
-                outputselect = 2;
+                DoFileSave(jsonstring, "txt");
             }
             else if (OutputToJson_RadioButton.IsChecked == true)
             {
-                outputselect = 3;
+                DoFileSave(jsonstring, "json");
             }
-
-            MessageBox.Show($"{outputselect}");
-            
+            else
+            {
+                MessageBox.Show("出力方法を指定してください。");
+            }
         }
 
 
@@ -152,8 +144,7 @@ namespace VScodeIntelliSenseForPIC
         {
             // 一時インスタンスの作成
             ConfigProperties configProperties = new ConfigProperties();
-            Configurations[] configurations = new Configurations[]
-                {new Configurations()};
+            Configurations[] configurations = new Configurations[] {new Configurations()};
             Browse browse = new Browse();
 
             // インクルードパスの取得 => 配列に格納
@@ -167,9 +158,9 @@ namespace VScodeIntelliSenseForPIC
             // プリプロセッサ定義の取得 => 配列に格納
             string[] defines = new string[]
             {
-                    ConfigDefine1_TextBox.Text,
-                    ConfigDefine2_TextBox.Text,
-                    ConfigDefine3_TextBox.Text
+                ConfigDefine1_TextBox.Text,
+                ConfigDefine2_TextBox.Text,
+                ConfigDefine3_TextBox.Text
             };
 
 
@@ -191,6 +182,49 @@ namespace VScodeIntelliSenseForPIC
 
             // 返却
             return configProperties;
+        }
+
+        /// <summary>
+        /// ファイルを保存するダイアログを表示、保存を行うメソッド
+        /// </summary>
+        /// <param name="data">保存するデータ文字列</param>
+        /// <param name="extention">拡張子</param>
+        private void DoFileSave(string data, string extention)
+        {
+            // ファイル保存パス
+            string savefilepath = string.Empty;
+
+            // ダイアログインスタンスを生成
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            // ファイルの種類を設定
+            switch (extention)
+            {
+                case "json":
+                    saveFileDialog.Filter = "JavaScript Object Notation(*.json)|*.json";
+                    break;
+                case "txt":
+                    saveFileDialog.Filter = "テキストファイル(*.txt)|*.txt";
+                    break;
+                default:
+                    saveFileDialog.Filter = "テキストファイル(*.txt)|*.txt";
+                    break;
+            }
+
+            // ダイアログを表示
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                // 選択されたファイル名を取得
+                savefilepath = saveFileDialog.FileName;
+
+                // テキスト出力
+                using (var writer = new StreamWriter(savefilepath))
+                {
+                    writer.WriteLine(data);
+                }
+
+                MessageBox.Show($"出力完了\nパス：{savefilepath}");
+            }
         }
     }
 }

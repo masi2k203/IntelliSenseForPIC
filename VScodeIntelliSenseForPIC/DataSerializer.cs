@@ -29,8 +29,6 @@ namespace VScodeIntelliSenseForPIC
             {
                 // エンコードの設定
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                // Dictionaly用設定
-                DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
                 // インデントの設定
                 WriteIndented = true
             };

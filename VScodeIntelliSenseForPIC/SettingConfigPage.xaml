@@ -24,7 +24,7 @@
         </Style>
     </Page.Resources>
     
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
@@ -78,7 +78,7 @@
                 <StackPanel>
                     <Label Content="インテリセンスエンジンの動作モードを指定してください。"/>
                     <ComboBox x:Name="ConfigEngine_ComboBox" Width="150" HorizontalAlignment="Left">
-                        <ComboBoxItem Content="default" Tag="default"/>
+                        <ComboBoxItem Content="${default}" Tag="default"/>
                         <ComboBoxItem Content="gcc-x64" Tag="gccx64" IsSelected="True"/>
                         <ComboBoxItem Content="gcc-x84" Tag="gccx84"/>
                         <ComboBoxItem Content="msvc-x64" Tag="msvcx64"/>
@@ -96,7 +96,7 @@
                         <ComboBoxItem Content="c11" Tag="c11"/>
                         <ComboBoxItem Content="c89" Tag="c89"/>
                         <ComboBoxItem Content="c99" Tag="c99" IsSelected="True"/>
-                        <ComboBoxItem Content="default" Tag="default"/>
+                        <ComboBoxItem Content="${default}" Tag="default"/>
                     </ComboBox>
                 </StackPanel>
             </GroupBox>
@@ -111,7 +111,7 @@
                         <ComboBoxItem Content="c++17" Tag="cpp17" IsSelected="True"/>
                         <ComboBoxItem Content="c++20" Tag="cpp20"/>
                         <ComboBoxItem Content="c++98" Tag="cpp98"/>
-                        <ComboBoxItem Content="default" Tag="default"/>
+                        <ComboBoxItem Content="${default}" Tag="default"/>
                     </ComboBox>
                 </StackPanel>
             </GroupBox>
