@@ -39,6 +39,20 @@ namespace VScodeIntelliSenseForPIC
         }
 
         /// <summary>
+        /// 拡張設定：[参照]ボタンを押した時の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FileSelectDatabase_Button_Click(object sender, RoutedEventArgs e)
+        {
+            // データベースパス取得
+            string databasepath = GetFolderPath();
+
+            // テキストボックスへ設定
+            DatabaseFileName_TextBox.Text = databasepath;
+        }
+
+        /// <summary>
         /// [出力]ボタンを押した時の処理
         /// </summary>
         /// <param name="sender"></param>
@@ -73,6 +87,26 @@ namespace VScodeIntelliSenseForPIC
             {
                 MessageBox.Show("出力方法を指定してください。");
             }
+        }
+
+        /// <summary>
+        /// 拡張設定を有効化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToggleAdvancedSetting_MenuItem_Checked(object sender, RoutedEventArgs e)
+        {
+            AdvancedSetting_GroupBox.IsEnabled = true;
+        }
+
+        /// <summary>
+        /// 拡張設定を無効化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToggleAdvancedSetting_MenuItem_Unchecked(object sender, RoutedEventArgs e)
+        {
+            AdvancedSetting_GroupBox.IsEnabled = false;
         }
 
 
@@ -173,8 +207,8 @@ namespace VScodeIntelliSenseForPIC
             configurations[0].cppStandard      = ConfigCppversion_ComboBox.Text;
 
             browse.path                          = includepath;
-            browse.databaseFilename              = "";
-            browse.limitSymbolsToIncludedHeaders = true;
+            browse.databaseFilename              = DatabaseFileName_TextBox.Text;
+            browse.limitSymbolsToIncludedHeaders = ((bool)TagParser_CheckBox.IsChecked) ? true : false;
 
             // 全ての値を設定
             configurations[0].browse = browse;
@@ -226,5 +260,6 @@ namespace VScodeIntelliSenseForPIC
                 MessageBox.Show($"出力完了\nパス：{savefilepath}");
             }
         }
+
     }
 }

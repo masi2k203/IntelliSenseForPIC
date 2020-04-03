@@ -9,6 +9,9 @@
       Title="SettingConfigPage">
 
     <Page.Resources>
+        <Style TargetType="TextBlock" x:Key="HeaderTextStyle">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
         <Style TargetType="{x:Type Button}" x:Key="ControlButton">
             <Setter Property="Width" Value="50"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -37,12 +40,20 @@
         
         <!-- メニューバー -->
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-            <MenuItem Header="ファイル(_F)"/>
+            <MenuItem Header="ファイル(_F)">
+                <MenuItem x:Name="EasyMode_MenuItem" Header="簡単設定モード(_E)" IsEnabled="False"/>
+                <Separator/>
+                <MenuItem x:Name="ToggleAdvancedSetting_MenuItem" Header="拡張設定を有効化" IsCheckable="True" Checked="ToggleAdvancedSetting_MenuItem_Checked" Unchecked="ToggleAdvancedSetting_MenuItem_Unchecked"/>
+                <MenuItem x:Name="EnvironmentalSetting_MenuItem" Header="環境設定(_S)" IsEnabled="False"/>
+            </MenuItem>
+            <MenuItem Header="ヘルプ(_H)" IsEnabled="False">
+                
+            </MenuItem>
         </Menu>
         
         <!-- 左：コントロール部分 -->
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="4">
-            <TextBlock Text="内容設定" FontSize="18"/>
+            <TextBlock Text="内容設定" Style="{StaticResource HeaderTextStyle}"/>
 
             <GroupBox Header="構成名">
                 <StackPanel>
@@ -73,7 +84,7 @@
 
         <!-- 中：コントロール部分 -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="4">
-            <TextBlock Text="IntelliSense設定" FontSize="18"/>
+            <TextBlock Text="IntelliSense設定" Style="{StaticResource HeaderTextStyle}"/>
             <GroupBox Header="intelliSenseモード">
                 <StackPanel>
                     <Label Content="インテリセンスエンジンの動作モードを指定してください。"/>
@@ -116,11 +127,11 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="拡張設定" IsEnabled="False">
+            <GroupBox x:Name="AdvancedSetting_GroupBox" Header="拡張設定" IsEnabled="False">
                 <StackPanel>
                     <Label Content="databaseFilename"/>
-                    <TextBox Text="" Style="{StaticResource ReadOnlyArea}"/>
-                    <Button x:Name="FileSelectDatabase_Button" Content="参照" Style="{StaticResource ControlButton}"/>
+                    <TextBox x:Name="DatabaseFileName_TextBox" Text="" Style="{StaticResource ReadOnlyArea}"/>
+                    <Button x:Name="FileSelectDatabase_Button" Content="参照" Style="{StaticResource ControlButton}" Click="FileSelectDatabase_Button_Click"/>
                     <CheckBox x:Name="TagParser_CheckBox" Content="limitSymbolsToIncludedHeaders" IsChecked="True" Margin="0,5,0,5"/>
                 </StackPanel>
                 
@@ -129,7 +140,7 @@
         
         <!-- 右：出力設定 -->
         <StackPanel Grid.Row="1" Grid.Column="2" Margin="4">
-            <TextBlock Text="出力設定" FontSize="18"/>
+            <TextBlock Text="出力設定" Style="{StaticResource HeaderTextStyle}"/>
             <GroupBox Header="出力方法">
                 <StackPanel x:Name="RadioButtonPanel">
                     <Label Content="出力方法を選択してください。"/>
