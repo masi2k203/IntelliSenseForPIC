@@ -5,25 +5,34 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:VScodeIntelliSenseForPIC"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="900"
+      d:DesignHeight="450" d:DesignWidth="800"
       Title="SettingConfigPage">
 
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="HeaderTextStyle">
             <Setter Property="FontSize" Value="18"/>
         </Style>
+        <Style TargetType="ComboBox" x:Key="SelectComboBox">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="5,0,0,0"/>
+        </Style>
         <Style TargetType="{x:Type Button}" x:Key="ControlButton">
             <Setter Property="Width" Value="50"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="5,0,0,0"/>
         </Style>
         <Style TargetType="{x:Type TextBox}" x:Key="TextInputArea">
             <Setter Property="Width" Value="150"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="5,0,0,0"/>
         </Style>
         <Style TargetType="{x:Type TextBox}" x:Key="ReadOnlyArea">
             <Setter Property="Width" Value="150"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Background" Value="WhiteSmoke"/>
+            <Setter Property="Margin" Value="5,0,0,0"/>
         </Style>
     </Page.Resources>
     
@@ -41,13 +50,16 @@
         <!-- メニューバー -->
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
             <MenuItem Header="ファイル(_F)">
-                <MenuItem x:Name="EasyMode_MenuItem" Header="簡単設定モード(_E)" IsEnabled="False"/>
+                <MenuItem Header="テンプレートを挿入">
+                    <MenuItem x:Name="InsertTemplateXC8v210_MenuItem" Header="XC8-v2.10" Click="InsertTemplateXC8v210_MenuItem_Click"/>
+                </MenuItem>
                 <Separator/>
                 <MenuItem x:Name="ToggleAdvancedSetting_MenuItem" Header="拡張設定を有効化" IsCheckable="True" Checked="ToggleAdvancedSetting_MenuItem_Checked" Unchecked="ToggleAdvancedSetting_MenuItem_Unchecked"/>
                 <MenuItem x:Name="EnvironmentalSetting_MenuItem" Header="環境設定(_S)" IsEnabled="False"/>
             </MenuItem>
             <MenuItem Header="ヘルプ(_H)" IsEnabled="False">
-                
+                <MenuItem x:Name="OpenHelpDialogMenuItem" Header="各設定の意味"/>
+                <MenuItem x:Name="GoToTwitterMenuItem" Header="お問い合わせ"/>
             </MenuItem>
         </Menu>
         
@@ -55,14 +67,14 @@
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="4">
             <TextBlock Text="内容設定" Style="{StaticResource HeaderTextStyle}"/>
 
-            <GroupBox Header="構成名">
+            <GroupBox Header="構成名(必須)" BorderBrush="Red">
                 <StackPanel>
                     <Label Content="識別用の名前を入力してください。"/>
                     <TextBox x:Name="ConfigName_TextBox" Text="" Style="{StaticResource TextInputArea}"/>
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="インクルードパス">
+            <GroupBox Header="インクルードパス(必須)" BorderBrush="Red">
                 <StackPanel>
                     <Label Content="XC8内のincludeフォルダを指定してください。"/>
                     <Button x:Name="FileSelectPath_Button" Content="参照" Style="{StaticResource ControlButton}" Click="FileSelectPath_Button_Click"/>
@@ -72,12 +84,17 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="プリプロセッサ定義">
+            <GroupBox Header="プリプロセッサ定義(必須)" BorderBrush="Red">
                 <StackPanel>
-                    <Label Content="プリプロセッサ定義を入力してください。(例：__16F18857)"/>
+                    <Label Content="使用するPICの型番を入力してください。"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBox x:Name="ModelNumberTextBox" Text="" Style="{StaticResource TextInputArea}"/>
+                        <Button x:Name="ModelNumberSelectButton" Content="確定" Style="{StaticResource ControlButton}" Click="ModelNumberSelectButton_Click"/>
+                    </StackPanel>
+                    <Label Content="プリプロセッサ定義"/>
                     <TextBox x:Name="ConfigDefine1_TextBox" Text="__XC8" Style="{StaticResource ReadOnlyArea}"/>
                     <TextBox x:Name="ConfigDefine2_TextBox" Text="__PICC" Style="{StaticResource ReadOnlyArea}"/>
-                    <TextBox x:Name="ConfigDefine3_TextBox" Text="" Style="{StaticResource TextInputArea}"/>
+                    <TextBox x:Name="ConfigDefine3_TextBox" Text="" Style="{StaticResource ReadOnlyArea}"/>
                 </StackPanel>
             </GroupBox>
         </StackPanel>
@@ -88,7 +105,7 @@
             <GroupBox Header="intelliSenseモード">
                 <StackPanel>
                     <Label Content="インテリセンスエンジンの動作モードを指定してください。"/>
-                    <ComboBox x:Name="ConfigEngine_ComboBox" Width="150" HorizontalAlignment="Left">
+                    <ComboBox x:Name="ConfigEngine_ComboBox" Style="{StaticResource SelectComboBox}">
                         <ComboBoxItem Content="${default}" Tag="default"/>
                         <ComboBoxItem Content="gcc-x64" Tag="gccx64" IsSelected="True"/>
                         <ComboBoxItem Content="gcc-x84" Tag="gccx84"/>
@@ -103,7 +120,7 @@
             <GroupBox Header="C言語標準">
                 <StackPanel>
                     <Label Content="C言語標準のバージョンを選択してください。"/>
-                    <ComboBox x:Name="ConfigCversion_ComboBox" Width="150" HorizontalAlignment="Left">
+                    <ComboBox x:Name="ConfigCversion_ComboBox" Style="{StaticResource SelectComboBox}">
                         <ComboBoxItem Content="c11" Tag="c11"/>
                         <ComboBoxItem Content="c89" Tag="c89"/>
                         <ComboBoxItem Content="c99" Tag="c99" IsSelected="True"/>
@@ -115,7 +132,7 @@
             <GroupBox Header="C++言語標準">
                 <StackPanel>
                     <Label Content="C++言語標準のバージョンを選択してください。"/>
-                    <ComboBox x:Name="ConfigCppversion_ComboBox" Width="150" HorizontalAlignment="Left">
+                    <ComboBox x:Name="ConfigCppversion_ComboBox" Style="{StaticResource SelectComboBox}">
                         <ComboBoxItem Content="c++03" Tag="cpp03"/>
                         <ComboBoxItem Content="c++11" Tag="cpp11"/>
                         <ComboBoxItem Content="c++14" Tag="cpp14"/>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Microsoft.VisualBasic;
 using System;
 using System.IO;
 using System.Windows;
@@ -59,9 +60,6 @@ namespace VScodeIntelliSenseForPIC
         /// <param name="e"></param>
         private void ConfigGenerate_Button_Click(object sender, RoutedEventArgs e)
         {
-            // 出力方法取得
-            int outputselect = 0;
-
             // コンフィグ情報の設定
             configProperties = SetConfigurations();
 
@@ -87,6 +85,28 @@ namespace VScodeIntelliSenseForPIC
             {
                 MessageBox.Show("出力方法を指定してください。");
             }
+        }
+
+        /// <summary>
+        /// [確定]ボタンを押した時の処理
+        /// 型番からプリプロセッサ定義を生成する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ModelNumberSelectButton_Click(object sender, RoutedEventArgs e)
+        {
+            // 型番を取得
+            string defineLabal = ModelNumberTextBox.Text;
+
+            // 大文字に変換
+            defineLabal = defineLabal.ToUpper();
+            // 半角に変更
+            defineLabal = Strings.StrConv(defineLabal, VbStrConv.Narrow);
+            // 先頭にアンダーバーを設定
+            defineLabal = $"_{defineLabal}";
+
+            // プリプロセッサ定義として設定
+            ConfigDefine3_TextBox.Text = defineLabal;
         }
 
         /// <summary>
@@ -199,7 +219,7 @@ namespace VScodeIntelliSenseForPIC
 
 
             // 各値を設定
-            configurations[0].name             = ConfigName_TextBox.Text;
+            configurations[0].name             = Strings.StrConv(ConfigName_TextBox.Text, VbStrConv.Narrow);
             configurations[0].includePath      = includepath;
             configurations[0].defines          = defines;
             configurations[0].intelliSenseMode = ConfigEngine_ComboBox.Text;
@@ -259,6 +279,22 @@ namespace VScodeIntelliSenseForPIC
 
                 MessageBox.Show($"出力完了\nパス：{savefilepath}");
             }
+        }
+
+
+        // < XC8テンプレート > //
+
+        /// <summary>
+        /// テンプレート
+        /// XC8 V2.10
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InsertTemplateXC8v210_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.ConfigName_TextBox.Text  = "XC8-2.10-C99";
+            this.ConfigPath2_TextBox.Text = "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include";
+            this.ConfigPath3_TextBox.Text = GetIncludeC99Path("C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include");
         }
 
     }

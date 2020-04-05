@@ -5,5 +5,5 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VScodeIntelliSenseForPIC"
         mc:Ignorable="d"
-        Title="IntelliSense for PIC" Height="450" Width="900" Source="SettingConfigPage.xaml" ShowsNavigationUI="False" ResizeMode="NoResize">
+        Title="IntelliSense for PIC" Height="450" Width="800" Source="SettingConfigPage.xaml" ShowsNavigationUI="False" ResizeMode="NoResize">
 </NavigationWindow>
